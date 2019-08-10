@@ -2,8 +2,8 @@ const express = require('express')
 const app = express()
 require('dotenv').config({ debug: process.env.DEBUG })
 const bodyparser = require('body-parser')
-const {insertUser} = require('./databaseController/user')
-
+const {insertUser,getUsers} = require('./databaseController/user')
+const {generateHash, compareHash} = require('./auth/hash/hash')
 
 // this is the access control
 app.use((req, res, next) => {
@@ -16,7 +16,8 @@ app.use(bodyparser.json())
 
 
 
-
+app.get('/getUsers',getUsers)
+app.post('/addUser',generateHash,insertUser)
 
 
 app.listen(process.env.port, () => console.log('server is ready') )
